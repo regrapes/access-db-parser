@@ -1,12 +1,14 @@
 {
-  "name": "accessdb-parser",
-  "version": "2.0.0-beta.1",
+  "name": "@regrapes/access-db-parser",
+  "version": "1.0.0",
   "description": "A pure javascript Microsoft AccessDB files (.mdb, .accdb) parser",
-  "main": "lib/index.js",
-  "types": "lib",
+  "main": "build/index.cjs.js",
+  "module": "build/index.esm.js",
+  "types": "build/index.d.ts",
   "scripts": {
-    "build": "tsc -p .",
-    "postinstall": "npm run build"
+    "build": "rollup -c",
+    "commit": "cz",
+    "semantic-release": "semantic-release"
   },
   "keywords": [
     "access",
@@ -16,21 +18,87 @@
     "mdb",
     "accdb"
   ],
-  "author": "Quentin Januel",
+  "author": "Torsten Blindert",
   "license": "MIT",
   "dependencies": {
-    "binary-parser": "^1.6.2",
-    "text-decoding": "^1.0.0",
+    "binary-parser": "^2.0.2",
+    "debug": "^4.3.3",
     "uuid": "^8.3.0"
   },
   "devDependencies": {
-    "@types/node": "^14.6.0",
-    "@types/uuid": "^8.3.0",
-    "typescript": "^4.0.2"
+    "@regrapes/eslint-config": "^1.8.0",
+    "@rollup/plugin-typescript": "^8.3.0",
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@types/debug": "^4.1.7",
+    "@types/node": "^17.0.9",
+    "@types/uuid": "^8.3.4",
+    "cz-conventional-changelog": "^3.3.0",
+    "rollup": "^2.64.0",
+    "typescript": "^4.5.4"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/QuentinJanuel/AccessDB-parser.git"
+    "url": "git+https://github.com/regrapes/access-db-parser.git"
   },
-  "homepage": "https://github.com/QuentinJanuel/AccessDB-parser#readme"
+  "homepage": "https://github.com/regrapes/access-db-parser#readme",
+  "prettier": "@regrapes/eslint-config/prettier",
+  "eslintConfig": {
+    "extends": [
+      "@regrapes/eslint-config/rules/base",
+      "@regrapes/eslint-config/rules/prettier"
+    ],
+    "rules": {
+      "complexity": "off",
+      "no-case-declarations": "off",
+      "default-case": "off",
+      "@typescript-eslint/consistent-type-imports": "warn",
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/consistent-type-assertions": "off",
+      "no-restricted-syntax": "off",
+      "@typescript-eslint/no-shadow": "off",
+      "consistent-return": "off",
+      "no-continue": "off",
+      "no-bitwise": "off",
+      "func-names": "off",
+      "no-param-reassign": "off"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "release": {
+    "branches": [
+      "main"
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      [
+        "@semantic-release/changelog",
+        {
+          "changelogFile": "CHANGELOG.md"
+        }
+      ],
+      "@semantic-release/npm",
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "CHANGELOG.md",
+            "package.json",
+            "package-lock.json"
+          ],
+          "message": "chore(release): 🚀 ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        }
+      ],
+      "@semantic-release/github"
+    ]
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }
