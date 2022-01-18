@@ -1,6 +1,6 @@
 {
   "name": "@regrapes/access-db-parser",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A pure javascript Microsoft AccessDB files (.mdb, .accdb) parser",
   "main": "build/index.cjs.js",
   "module": "build/index.esm.js",

@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/regrapes/access-db-parser/compare/v1.0.0...v1.0.1) (2022-01-18)
+
+
+### Bug Fixes
+
+* add missing build step ([846cc9d](https://github.com/regrapes/access-db-parser/commit/846cc9d9ccf06eb156d7c785a749fc2df9b905d3))
+
 # 1.0.0 (2022-01-18)
 
 
