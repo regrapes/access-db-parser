@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/regrapes/access-db-parser/compare/v1.0.1...v1.1.0) (2022-03-23)
+
+
+### Features
+
+* enforce UTC date ([5c32569](https://github.com/regrapes/access-db-parser/commit/5c32569224c0c0b37abd3a6dfcca91973c78515a))
+
 ## [1.0.1](https://github.com/regrapes/access-db-parser/compare/v1.0.0...v1.0.1) (2022-01-18)
 
 
