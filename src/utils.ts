@@ -58,11 +58,11 @@ export const parseType = (
       const hoursPassedDecimal = buffer.readDoubleLE(0) % 1
       const hours = Math.floor(hoursPassedDecimal * 24)
       const minutes = Math.floor(((hoursPassedDecimal * 24) % 1) * 60)
-      const seconds = Math.floor(((((hoursPassedDecimal * 24) % 1) * 60) % 1) * 60)
+      const seconds = Math.ceil(((((hoursPassedDecimal * 24) % 1) * 60) % 1) * 60)
       const date = new Date('1899/12/30')
-      date.setHours(12, 0, 0, 0)
-      date.setDate(date.getDate() + daysPassed)
-      date.setHours(hours, minutes, seconds)
+      date.setUTCHours(12, 0, 0, 0)
+      date.setUTCDate(date.getDate() + daysPassed)
+      date.setUTCHours(hours, minutes, seconds)
       // todo check TIME ZONE
       return date
     }
