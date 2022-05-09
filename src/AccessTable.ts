@@ -164,7 +164,7 @@ export class AccessTable {
     return relativeRecordMetadata
   }
 
-  private parseMemo(relativeObjData: Buffer, column: Column) {
+  private parseMemo(relativeObjData: Buffer) {
     debug(`Parsing memo field ${relativeObjData}`)
     const parsedMemo = MEMO.parse(relativeObjData)
     let memoData: Buffer
@@ -183,9 +183,21 @@ export class AccessTable {
       memoType = DataType.Text
     } else {
       debug('LVAL type 2')
-      debug('memo lval type 2 currently not supported')
-      memoData = relativeObjData
-      memoType = column.type
+
+      const dataBlocks: Array<Buffer> = []
+      let { recordPointer } = parsedMemo
+
+      while (recordPointer) {
+        const record = this.getOverflowRecord(recordPointer)
+        if (record === undefined) {
+          throw new Error('LVAL type 2 memoData is undefined')
+        }
+
+        dataBlocks.push(record.subarray(4))
+        recordPointer = record.readInt32LE()
+      }
+      memoData = Buffer.concat(dataBlocks)
+      memoType = DataType.Text
     }
     return parseType(memoType, memoData, memoData.length, this.version, this.textEncoding)
   }
@@ -222,7 +234,7 @@ export class AccessTable {
       let parsedType: PossibleTypes
       if (column.type === DataType.Memo) {
         try {
-          parsedType = this.parseMemo(relativeObjData, column)
+          parsedType = this.parseMemo(relativeObjData)
         } catch {
           debug(`Failed to parse memo field. Using data as bytes`)
           parsedType = relativeObjData.toString()
