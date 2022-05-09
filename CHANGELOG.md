@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/regrapes/access-db-parser/compare/v1.1.0...v1.2.0) (2022-05-09)
+
+
+### Features
+
+* Support for LVAL type 2 ([297287f](https://github.com/regrapes/access-db-parser/commit/297287f5d9736824c14bd3307738a562d91c6326))
+
 # [1.1.0](https://github.com/regrapes/access-db-parser/compare/v1.0.1...v1.1.0) (2022-03-23)
 
 
