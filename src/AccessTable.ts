@@ -25,7 +25,8 @@ export class AccessTable {
     private pageSize: number,
     private dataPages: Dict<Buffer>,
     private tableDefs: Dict<Buffer>,
-    private textEncoding: BufferEncoding
+    private textEncoding: BufferEncoding,
+    private sanitizeTextBuffer?: (buffer: Buffer) => Buffer
   ) {
     ;[this.columns, this.tableHeader] = this.getTableColumns()
   }
@@ -121,7 +122,7 @@ export class AccessTable {
       if (column.fixedOffset > originalRecord.length)
         throw new Error(`Column offset is bigger than the length of the record ${column.fixedOffset}`)
       const record = originalRecord.slice(column.fixedOffset)
-      parsedType = parseType(column.type, record, this.version, undefined, this.textEncoding)
+      parsedType = parseType(column.type, record, this.version, undefined, this.textEncoding, this.sanitizeTextBuffer)
     }
     if (this.parsedTable[columnName] === undefined) this.parsedTable[columnName] = []
     this.parsedTable[columnName]!.push(parsedType)
@@ -199,7 +200,7 @@ export class AccessTable {
       memoData = Buffer.concat(dataBlocks)
       memoType = DataType.Text
     }
-    return parseType(memoType, memoData, memoData.length, this.version, this.textEncoding)
+    return parseType(memoType, memoData, memoData.length, this.version, this.textEncoding, this.sanitizeTextBuffer)
   }
 
   private parseDynamicLengthData(
@@ -240,7 +241,14 @@ export class AccessTable {
           parsedType = relativeObjData.toString()
         }
       } else {
-        parsedType = parseType(column.type, relativeObjData, relativeObjData.length, this.version, this.textEncoding)
+        parsedType = parseType(
+          column.type,
+          relativeObjData,
+          relativeObjData.length,
+          this.version,
+          this.textEncoding,
+          this.sanitizeTextBuffer
+        )
       }
       if (this.parsedTable[colName] === undefined) this.parsedTable[colName] = []
       this.parsedTable[colName]!.push(parsedType)
@@ -266,7 +274,8 @@ export class AccessTable {
         }
       }
     } else {
-      throw new Error(`Failed to parse null table column count ${this.tableHeader.columnCount}`)
+      debug(`Failed to parse null table column count ${this.tableHeader.columnCount}`)
+      return
     }
     if (this.version > 3) record = record.slice(2)
     else record = record.slice(1)

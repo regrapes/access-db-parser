@@ -26,7 +26,11 @@ export class AccessParser {
   private version = ALL_VERSIONS.VERSION_3
   private pageSize = PAGE_SIZE_V3
   private catalog: Dict<number>
-  public constructor(private dbData: Buffer, private textEncoding: BufferEncoding = 'utf8') {
+  public constructor(
+    private dbData: Buffer,
+    private textEncoding: BufferEncoding = 'utf8',
+    private sanitizeTextBuffer?: (buffer: Buffer) => Buffer
+  ) {
     this.parseFileHeader()
     ;[this.tableDefs, this.dataPages /* this.allPages */] = categorizePages(this.dbData, this.pageSize)
     this.tablesWithData = this.linkTablesToData()
@@ -85,7 +89,8 @@ export class AccessParser {
       this.pageSize,
       this.dataPages,
       this.tableDefs,
-      this.textEncoding
+      this.textEncoding,
+      this.sanitizeTextBuffer
     )
     const catalog = accessTable.parse()
     const tablesMapping: Dict<number> = {}
@@ -126,7 +131,15 @@ export class AccessParser {
         // table = new TableObject(tableOffset, tableDef);
       }
     }
-    const accessTable = new AccessTable(table, this.version, this.pageSize, this.dataPages, this.tableDefs, this.textEncoding)
+    const accessTable = new AccessTable(
+      table,
+      this.version,
+      this.pageSize,
+      this.dataPages,
+      this.tableDefs,
+      this.textEncoding,
+      this.sanitizeTextBuffer
+    )
     return accessTable.parse()
   }
 

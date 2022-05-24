@@ -24,13 +24,15 @@ export enum DataType {
 
 const TABLE_PAGE_MAGIC = Buffer.from([0x02, 0x01])
 const DATA_PAGE_MAGIC = Buffer.from([0x01, 0x01])
+const BOMS = [Buffer.from([0xfe, 0xff]), Buffer.from([0xff, 0xfe])]
 
 export const parseType = (
   dataType: DataType,
   buffer: Buffer,
   length?: number,
   version: Version = 3,
-  textEncoding: BufferEncoding = 'utf8'
+  textEncoding: BufferEncoding = 'utf8',
+  sanitizeTextBuffer = (buffer: Buffer) => buffer
 ) => {
   switch (dataType) {
     case DataType.Int8: {
@@ -77,11 +79,11 @@ export const parseType = (
     }
     case DataType.Text: {
       if (version > 3) {
-        const first = Buffer.compare(buffer.slice(0, 2), Buffer.from([0xfe, 0xff])) === 0
-        const second = Buffer.compare(buffer.slice(0, 2), Buffer.from([0xff, 0xfe])) === 0
-        if (first || second) {
-          return new TextDecoder(textEncoding).decode(buffer.slice(2))
+        const sanitzedBuffer = sanitizeTextBuffer(buffer)
+        if (sanitzedBuffer.slice(0, 2).compare(BOMS[0]) === 0 || sanitzedBuffer.slice(0, 2).compare(BOMS[1]) === 0) {
+          return new TextDecoder(textEncoding, { ignoreBOM: true }).decode(sanitzedBuffer.slice(2))
         }
+
         return new TextDecoder('utf-16le').decode(buffer)
       }
       return buffer.toString(textEncoding)
