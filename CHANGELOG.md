@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/regrapes/access-db-parser/compare/v1.2.0...v1.3.0) (2022-05-24)
+
+
+### Features
+
+* Allow special use case buffer handling ([7769877](https://github.com/regrapes/access-db-parser/commit/7769877627108e7927960b85374cbddb2abd6121))
+
 # [1.2.0](https://github.com/regrapes/access-db-parser/compare/v1.1.0...v1.2.0) (2022-05-09)
 
 
