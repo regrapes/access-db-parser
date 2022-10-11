@@ -1,3 +1,16 @@
+# [2.0.0](https://github.com/regrapes/access-db-parser/compare/v1.3.0...v2.0.0) (2022-10-11)
+
+
+### Bug Fixes
+
+* enforce UTC Dates ([664e102](https://github.com/regrapes/access-db-parser/commit/664e102196155753e4b19d889a40189ea603c7ea))
+
+
+### BREAKING CHANGES
+
+* Changed the way dates are handles which generates a different result if your system
+is not on UTC timezone
+
 # [1.3.0](https://github.com/regrapes/access-db-parser/compare/v1.2.0...v1.3.0) (2022-05-24)
 
 
