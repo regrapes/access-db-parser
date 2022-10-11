@@ -61,11 +61,10 @@ export const parseType = (
       const hours = Math.floor(hoursPassedDecimal * 24)
       const minutes = Math.floor(((hoursPassedDecimal * 24) % 1) * 60)
       const seconds = Math.ceil(((((hoursPassedDecimal * 24) % 1) * 60) % 1) * 60)
-      const date = new Date('1899/12/30')
+      const date = new Date(Date.UTC(1899, 12, 30))
       date.setUTCHours(12, 0, 0, 0)
-      date.setUTCDate(date.getDate() + daysPassed)
+      date.setUTCDate(date.getUTCDate() + daysPassed)
       date.setUTCHours(hours, minutes, seconds)
-      // todo check TIME ZONE
       return date
     }
     case DataType.Binary: {
