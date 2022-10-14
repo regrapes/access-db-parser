@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/regrapes/access-db-parser/compare/v2.0.0...v2.0.1) (2022-10-14)
+
+
+### Bug Fixes
+
+* wrong base date ([8dab0cd](https://github.com/regrapes/access-db-parser/commit/8dab0cd153614633d99da0613b7b841568640038))
+
 # [2.0.0](https://github.com/regrapes/access-db-parser/compare/v1.3.0...v2.0.0) (2022-10-11)
 
 
