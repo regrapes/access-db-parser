@@ -1,3 +1,10 @@
+## [2.0.2](https://github.com/regrapes/access-db-parser/compare/v2.0.1...v2.0.2) (2023-06-08)
+
+
+### Bug Fixes
+
+* **end date pointer:** correctly determine the end point of dynamic text length ([9b388a4](https://github.com/regrapes/access-db-parser/commit/9b388a4abda8eec945ba7a19b48ece03bacbf7ae))
+
 ## [2.0.1](https://github.com/regrapes/access-db-parser/compare/v2.0.0...v2.0.1) (2022-10-14)
 
 
