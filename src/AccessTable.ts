@@ -103,7 +103,9 @@ export class AccessTable {
       record = recordPage.slice(start)
     } else {
       let end = parsedData.recordOffsets[recordOffset - 1]
-      if ((end & 0x8000) >>> 0) end = (end & 0xfff) >>> 0
+      if (end & 0x8000 && (end & 0xff) !== 0) {
+        end &= 0xfff
+      }
       record = recordPage.slice(start, end)
     }
     return record
@@ -126,6 +128,7 @@ export class AccessTable {
     }
     if (this.parsedTable[columnName] === undefined) this.parsedTable[columnName] = []
     this.parsedTable[columnName]!.push(parsedType)
+    return parsedType
   }
 
   private parseDynamicLengthRecordsMetadata(reverseRecord: Buffer, originalRecord: Buffer, nullTableLength: number) {
@@ -233,6 +236,7 @@ export class AccessTable {
       }
       const relativeObjData = originalRecord.slice(relStart + jumpTableAddition, relEnd + jumpTableAddition)
       let parsedType: PossibleTypes
+
       if (column.type === DataType.Memo) {
         try {
           parsedType = this.parseMemo(relativeObjData)
@@ -282,6 +286,7 @@ export class AccessTable {
     const relativeRecordsColumnMap: Dict<Column> = {}
     for (const i of Object.keys(this.columns)) {
       const column = this.columns[i]!
+
       if (!column.columnFlags.fixedLength) {
         relativeRecordsColumnMap[i] = column
         continue
